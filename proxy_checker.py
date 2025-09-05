@@ -1,132 +1,126 @@
+import os
 import json
 import requests
-import socks
 import socket
+import socks
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
-# ============ CONFIG ============
-PROXY_SOURCE_FILE = "proxies.txt"   # your pasted proxies file
-SHEET_NAME = "ActiveProxies"
-# ================================
-
-# Google Sheets setup
+# ===============================
+# 🔑 Load Google API credentials from GitHub Secret
+# ===============================
+creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
-sheet = client.open(SHEET_NAME).sheet1
 
-def parse_proxy_line(line):
-    """Parse your custom proxy format."""
-    parts = line.strip().split("|")
-    if len(parts) < 2:
-        return None
+# ===============================
+# 📄 Open your Google Sheet
+# ===============================
+sheet = client.open("ActiveProxies").sheet1
 
-    ip_parts = parts[0].split(":")
-    host = ip_parts[0]
-    port = int(ip_parts[1])
-    username, password = (None, None)
-    if len(ip_parts) == 4:
-        username, password = ip_parts[2], ip_parts[3]
-
+# ===============================
+# 🌍 Get proxy details (geo lookup)
+# ===============================
+def get_proxy_details(ip):
+    try:
+        r = requests.get(f"http://ipinfo.io/{ip}/json", timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return {
+                "country": data.get("country", "Unknown"),
+                "region": data.get("region", "Unknown"),
+                "city": data.get("city", "Unknown"),
+                "org": data.get("org", "Unknown"),
+                "isp": data.get("org", "Unknown"),
+            }
+    except:
+        pass
     return {
-        "host": host,
-        "port": port,
-        "username": username,
-        "password": password
+        "country": "Unknown",
+        "region": "Unknown",
+        "city": "Unknown",
+        "org": "Unknown",
+        "isp": "Unknown",
     }
 
+# ===============================
+# ✅ Test proxy
+# ===============================
+def test_proxy(proxy):
+    try:
+        if len(proxy) == 2:  # ip, port
+            ip, port = proxy
+            username, password = None, None
+        else:  # ip, port, user, pass
+            ip, port, username, password = proxy
+
+        socks.set_default_proxy(socks.SOCKS5, ip, int(port), True, username, password)
+        socket.socket = socks.socksocket
+
+        # try a simple request
+        r = requests.get("http://httpbin.org/ip", timeout=8)
+        if r.status_code == 200:
+            return True
+    except:
+        return False
+    return False
+
+# ===============================
+# 📂 Read proxies.txt
+# ===============================
 def load_proxies():
-    """Read proxies from local file."""
-    with open(PROXY_SOURCE_FILE, "r") as f:
-        lines = f.read().strip().splitlines()
     proxies = []
-    for line in lines:
-        p = parse_proxy_line(line)
-        if p:
-            proxies.append(p)
+    with open("proxies.txt", "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split(":")
+            if len(parts) == 2:
+                proxies.append((parts[0], parts[1]))
+            elif len(parts) == 4:
+                proxies.append((parts[0], parts[1], parts[2], parts[3]))
     return proxies
 
-def test_and_get_details(proxy):
-    """Check proxy and fetch metadata."""
-    try:
-        host, port = proxy["host"], proxy["port"]
-        user, pwd = proxy.get("username"), proxy.get("password")
-
-        # low-level test
-        sock = socks.socksocket()
-        if user and pwd:
-            sock.set_proxy(socks.SOCKS5, host, port, True, user, pwd)
-        else:
-            sock.set_proxy(socks.SOCKS5, host, port)
-        sock.settimeout(5)
-        sock.connect(("httpbin.org", 80))
-        sock.close()
-
-        # high-level GeoIP check
-        session = requests.Session()
-        proxy_auth = f"{user}:{pwd}@" if user else ""
-        proxy_url = f"socks5h://{proxy_auth}{host}:{port}"
-        session.proxies = {"http": proxy_url, "https": proxy_url}
-        r = session.get("http://ip-api.com/json/", timeout=10)
-
-        if r.status_code == 200:
-            geo = r.json()
-            return {
-                "host": host,
-                "port": port,
-                "username": user or "",
-                "password": pwd or "",
-                "country": geo.get("country"),
-                "region": geo.get("regionName"),
-                "city": geo.get("city"),
-                "isp": geo.get("isp"),
-                "org": geo.get("org"),
-                "active": "Yes",
-                "last_checked": datetime.utcnow().isoformat()
-            }
-    except Exception:
-        pass
-    return None
-
-def update_google_sheet(proxies):
-    """Save active proxies to Google Sheets with newest on top."""
-    # clear old sheet (but keep headers)
-    existing = sheet.get_all_records()
-    if existing:
-        sheet.delete_rows(2, len(existing)+1)
-
-    rows = []
-    for p in proxies:
-        rows.append([
-            p["host"],
-            p["port"],
-            p["username"],
-            p["password"],
-            p["country"],
-            p["region"],
-            p["city"],
-            p["isp"],
-            p["org"],
-            p["active"],
-            p["last_checked"]
-        ])
-
-    # insert new rows at top (after header)
-    if rows:
-        sheet.insert_rows(rows, 2)
-
+# ===============================
+# 📝 Main
+# ===============================
 def main():
-    raw_proxies = load_proxies()
-    active = []
-    for proxy in raw_proxies:
-        info = test_and_get_details(proxy)
-        if info:
-            active.append(info)
-    print(f"[INFO] Active proxies: {len(active)}")
-    if active:
-        update_google_sheet(active)
+    proxies = load_proxies()
+    active_list = []
+
+    for proxy in proxies:
+        ip = proxy[0]
+        port = proxy[1]
+        print(f"Checking {ip}:{port} ...")
+        if test_proxy(proxy):
+            details = get_proxy_details(ip)
+            active_list.append([
+                ip, port,
+                proxy[2] if len(proxy) > 2 else "",
+                proxy[3] if len(proxy) > 3 else "",
+                details["country"],
+                details["region"],
+                details["city"],
+                details["isp"],
+                details["org"],
+                "Yes",
+                datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+            ])
+
+    # Clear and update sheet
+    sheet.clear()
+    sheet.append_row([
+        "Host", "Port", "Username", "Password",
+        "Country", "Region", "City", "ISP", "Org",
+        "Active", "LastChecked"
+    ])
+    if active_list:
+        sheet.append_rows(active_list)
+
+    print(f"✅ Done. {len(active_list)} active proxies saved to Google Sheet.")
 
 if __name__ == "__main__":
     main()
