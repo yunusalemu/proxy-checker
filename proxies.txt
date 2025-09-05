@@ -1,0 +1,33 @@
+65.108.251.40:50577|112.202.249.42|Philippines|Metro Manila|Quezon City|1116|112.202.249.42.pldt.net|Yes|Residential
+65.108.251.40:51531|51.36.233.85|Saudi Arabia|Mecca Region|Jeddah|Unknown|Mobile Telecommunication Company Saudi Arabia Joint-Stock company|No|Mobile
+65.108.251.40:22645|119.42.59.228|India|National Capital Territory of Delhi|New Delhi|110003|Ani Network Pvt Ltd|Yes|Business
+65.108.251.40:25879|2.90.197.176|Saudi Arabia|Mecca Region|Jeddah|Unknown|Saudinet|No|Mobile
+65.108.251.40:37650|142.154.52.202|Saudi Arabia|Mecca Region|Jeddah|Unknown|Saudi Telecom Company JSC|No|ISP/Mob
+65.108.251.40:22221|208.79.163.99|United States|South Carolina|Moncks Corner|29461|Home Telephone Company, Inc.|No|ISP/Mob
+65.108.251.40:18373|99.232.202.166|Canada|Ontario|Alliston|L9R|pool-99-232-202-166.cpe.net.cable.rogers.com|Yes|Residential
+152.53.164.59:31759:svmpj7:SzGQ6V|187.73.199.85|Brazil|São Paulo|Ourinhos|19900|stetnet199-85.radio.stetnet.com.br|No|ISP/Mob
+37.27.93.106:11294:2URKod:L87qtJ|220.244.103.39|Australia|Queensland|Rosalie Plains|4064|220-244-103-39.tpgi.com.au|Yes|Business
+152.53.164.59:40611:6t4IMN:3qpu8k|181.67.249.74|Peru|Lambayeque|Chiclayo|Unknown|Telefonica del Peru S.A.A.|Yes|Business
+65.108.251.40:10136|206.1.134.203|Venezuela|Zulia|Maracaibo|Unknown|Airtek Solutions C.A.|Yes|Business
+152.53.164.59:27387:vMxsaL:yGa8PN|213.154.16.61|Azerbaijan|Baku City|Baku|Unknown|Bakinternet ISP|No|Residential
+65.108.251.40:55632|99.228.42.117|Canada|Ontario|Richmond Hill|L4C|pool-99-228-42-117.cpe.net.cable.rogers.com|Yes|Residential
+65.108.251.40:37740|99.225.155.228|Canada|Ontario|Etobicoke|M8Z|pool-99-225-155-228.cpe.net.cable.rogers.com|Yes|Residential
+152.53.164.59:26367:tzNMxd:EeUfIc|103.214.179.25|Bangladesh|Khulna Division|Jessore|7400|Ray Communications|No|ISP/Mob
+37.27.93.106:19779:aSDMmV:IPgoNk|23.93.97.38|United States|California|Berkeley|94707|23-93-97-38.fiber.dynamic.sonic.net|Yes|Residential
+37.27.93.106:24114:PFIzGc:q4bq2a|99.241.94.234|Canada|Ontario|North York|M2N|pool-99-241-94-234.cpe.net.cable.rogers.com|Yes|Residential
+152.53.164.59:44683:VI6J1p:aUQCh1|102.101.203.183|Morocco|Casablanca-Settat|Casablanca|Unknown|Orange Morocco|No|Mobile
+152.53.164.59:57594:0vyI6U:6fpPAj|86.82.152.93|Netherlands|North Holland|Hilversum|1222|86-82-152-93.fixed.kpn.net|No|Residential
+65.108.251.40:18100|185.24.60.91|Iraq|Erbil|Erbil|Unknown|Kurdistan|Yes|Business
+65.108.251.40:51932|203.223.89.142|Bangladesh|Dhaka Division|Dhaka|1230|Md Rofikul Islam|No|ISP/Mob
+65.108.251.40:10137|69.253.214.34|United States|Delaware|New Castle|19720|c-69-253-214-34.hsd1.de.comcast.net|Yes|Residential
+65.108.251.40:45735|90.25.1.119|France|Normandy|Le Havre|76600|anantes-651-1-202-119.w90-25.abo.wanadoo.fr|Yes|Residential
+65.108.251.40:46738|194.195.80.60|Oman|Muscat|Muscat|135|Awaser Oman LLC|Yes|Hosting
+65.108.251.40:23521|174.117.74.60|Canada|Newfoundland and Labrador|St. John's|A1A|pool-174-117-74-60.cpe.net.cable.rogers.com|No|Residential
+65.108.251.40:58500|197.186.0.161|Tanzania|Dar es Salaam Region|Dar es Salaam|Unknown|161-0-186-197.r.airtel.co.tz|No|Mobile
+65.108.251.40:53959|73.30.151.152|United States|Delaware|Newark|19702|c-73-30-151-152.hsd1.de.comcast.net|Yes|Residential
+65.108.251.40:34244|82.7.117.185|United Kingdom|England|Hounslow|TW3|cpc86981-haye25-2-0-cust440.17-4.cable.virginm.net|Yes|Residential
+65.108.251.40:25824|176.29.79.230|Jordan|Amman Governorate|Amman|Unknown|ZAIN|No|Mobile
+65.108.251.40:36909|76.88.86.29|United States|California|Carlsbad|92008|syn-076-088-086-029.res.spectrum.com|Yes|Business
+65.108.251.40:52560|103.253.247.227|Bangladesh|Dhaka Division|Dhaka|1212|Innovative Online Ltd.|Yes|Business
+65.108.251.40:55770|86.220.89.4|France|Auvergne-Rhône-Alpes|Thonon-les-Bains|74200|lfbn-ann-1-117-4.w86-220.abo.wanadoo.fr|Yes|Residential
+65.108.251.40:18324|37.230.57.46|Paraguay|Alto Paraná Department|Ciudad del Este|Unknown|Aranda Cardozo Lider Ramon|Yes|Business
